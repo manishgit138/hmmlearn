@@ -74,14 +74,25 @@ jobs:
           pip install -ve . && \
           pip list && \
           deactivate'
-    - name: Wheel done
+    - name: Wheel created
       run: |
         docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} \
           bash -exc '\
           source .env/bin/activate && \
           git clean -xdf && \
-          python --version && \
-          export PV="$(/opt/python/cp37-cp37m/bin/python -c 'import sys; print("".join(map(str, sys.version_info[:2])))')" && \
-          export ABI="$(python -c 'import sys; print(sys.abiflags)')" && \
+          python setup.py bdist_wheel --verbose && \
+          auditwheel --verbose repair --wheel-dir=/io/dist /io/dist/*.whl && \
           deactivate'
+    
+    #- name: Wheel done
+    #  run: |
+    #    docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+    #      ${{ env.img }} \
+    #      bash -exc '\
+    #      source .env/bin/activate && \
+    #      git clean -xdf && \
+    #      python --version && \
+    #      export PV="$(/opt/python/cp37-cp37m/bin/python -c 'import sys; print("".join(map(str, sys.version_info[:2])))')" && \
+    #      export ABI="$(python -c 'import sys; print(sys.abiflags)')" && \
+    #      deactivate'
