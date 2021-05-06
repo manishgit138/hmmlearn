@@ -73,6 +73,7 @@ jobs:
           pip install -U  pip setuptools wheel pytest pytest-cov && \
           pip install -ve . && \
           pip list && \
+          python setup.py bdist_wheel --verbose && \
           deactivate'
     - name: Wheel created
       run: |
