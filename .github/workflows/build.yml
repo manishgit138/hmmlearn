@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
         python-version: [3.6]
     runs-on: ${{ matrix.os }}
     steps:
@@ -81,5 +81,7 @@ jobs:
           bash -exc '\
           source .env/bin/activate && \
           git clean -xdf && \
+          python --version && \
+          export PV="$(/opt/python/cp37-cp37m/bin/python -c 'import sys; print("".join(map(str, sys.version_info[:2])))')" && \
           export ABI="$(python -c 'import sys; print(sys.abiflags)')" && \
           deactivate'
