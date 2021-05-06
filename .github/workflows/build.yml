@@ -81,6 +81,7 @@ jobs:
           bash -exc '\
           source .env/bin/activate && \
           git clean -xdf && \
+          yum install -y python-setuptools && \
           python setup.py bdist_wheel --verbose && \
           auditwheel --verbose repair --wheel-dir=/io/dist /io/dist/*.whl && \
           deactivate'
