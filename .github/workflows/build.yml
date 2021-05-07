@@ -64,7 +64,7 @@ jobs:
     - name: Set up QEMU
       id: qemu
       uses: docker/setup-qemu-action@v1
-    - name: Install
+    - name: Install, Test and Build wheel
       run: |
         docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} \
@@ -76,17 +76,8 @@ jobs:
           python setup.py bdist_wheel --verbose && \
           auditwheel --verbose repair --wheel-dir=dist dist/*.whl && \
           deactivate'
-    - name: Wheel created
-      run: |
-        docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-          ${{ env.img }} \
-          bash -exc '\
-          source .env/bin/activate && \
-          git clean -xdf && \
-          yum install -y python-setuptools && \
-          python setup.py bdist_wheel --verbose && \
-          auditwheel --verbose repair --wheel-dir=/io/dist /io/dist/*.whl && \
-          deactivate'
+    - name: check wheel
+      run: ls -l dist/*.whl
     - uses: actions/upload-artifact@v2
       with:
         name: wheels
