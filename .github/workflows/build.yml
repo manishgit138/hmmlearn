@@ -74,7 +74,7 @@ jobs:
           pip install -ve . && \
           pip list && \
           python setup.py bdist_wheel --verbose && \
-          auditwheel --verbose repair --wheel-dir=/io/dist /io/dist/*.whl && \
+          auditwheel --verbose repair --wheel-dir=dist dist/*.whl && \
           deactivate'
     - name: Wheel created
       run: |
@@ -85,7 +85,7 @@ jobs:
           git clean -xdf && \
           yum install -y python-setuptools && \
           python setup.py bdist_wheel --verbose && \
-          auditwheel --verbose repair --wheel-dir=./dist ./dist/*.whl && \
+          auditwheel --verbose repair --wheel-dir=/io/dist /io/dist/*.whl && \
           deactivate'
     - uses: actions/upload-artifact@v2
       with:
